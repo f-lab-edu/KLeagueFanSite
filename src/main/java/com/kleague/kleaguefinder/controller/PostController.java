@@ -1,8 +1,8 @@
 package com.kleague.kleaguefinder.controller;
 
-import com.kleague.kleaguefinder.request.PostCreateRequest;
-import com.kleague.kleaguefinder.request.PostModifyRequest;
-import com.kleague.kleaguefinder.request.PostSearchRequest;
+import com.kleague.kleaguefinder.request.post.PostCreateRequest;
+import com.kleague.kleaguefinder.request.post.PostModifyRequest;
+import com.kleague.kleaguefinder.request.post.PostSearchRequest;
 import com.kleague.kleaguefinder.response.PostResponse;
 import com.kleague.kleaguefinder.service.PostService;
 import lombok.RequiredArgsConstructor;
@@ -18,29 +18,29 @@ public class PostController {
 
     private final PostService postService;
 
-    @PostMapping("v1/posts/write")
+    @PostMapping("api/v1/posts/write")
     public Long write(@RequestBody PostCreateRequest postCreateRequest) {
         return postService.write(postCreateRequest);
     }
 
-    @GetMapping("v1/posts/{postId}")
-    public PostResponse findOne(@PathVariable("postId") Long postId) {
-        return postService.findOne(postId);
+    @GetMapping("api/v1/posts/{id}")
+    public PostResponse findOne(@PathVariable("id") Long id) {
+        return postService.findOne(id);
     }
 
-    @PostMapping("v1/posts/search")
+    @PostMapping("api/v1/posts/search")
     public List<PostResponse> search(@RequestBody PostSearchRequest postSearchRequest) {
         return postService.findBySearch(postSearchRequest);
     }
 
-    @PutMapping("v1/posts/{postId}")
-    public void modify(@PathVariable("postId") Long postId,
+    @PutMapping("api/v1/posts/{id}")
+    public void modify(@PathVariable("id") Long id,
                        @RequestBody PostModifyRequest postModifyRequest) {
-        postService.modify(postId, postModifyRequest);
+        postService.modify(id, postModifyRequest);
     }
 
-    @DeleteMapping("v1/posts/{postId}")
-    public void delete(@PathVariable("postId") Long postId) {
-        postService.delete(postId);
+    @DeleteMapping("api/v1/posts/{id}")
+    public void delete(@PathVariable("id") Long id) {
+        postService.delete(id);
     }
 }

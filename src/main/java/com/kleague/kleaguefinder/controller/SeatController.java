@@ -22,28 +22,28 @@ public class SeatController {
 
     private final SeatService seatService;
 
-    @PostMapping("api/v1/seat/save")
+    @PostMapping("api/v1/seats/save")
     public Long save(@Valid @RequestBody SeatCreateRequest request) {
         return seatService.save(request);
     }
 
-    @GetMapping("api/v1/seat/{seatId}")
-    public SeatResponse findOne(@PathVariable("seatId") Long seatId) {
-        return seatService.findById(seatId);
+    @GetMapping("api/v1/seats/{id}")
+    public SeatResponse findOne(@PathVariable("id") Long id) {
+        return seatService.findById(id);
     }
 
-    @PostMapping("api/v1/seat/search")
+    @PostMapping("api/v1/seats/search")
     public List<SeatResponse> search(@Valid @RequestBody SeatSearchRequest request) {
         return seatService.findByRequest(request);
     }
 
-    @PutMapping("api/v1/seat/{seatId}")
-    public void modify(@PathVariable("seatId") Long seatId, @Valid @RequestBody SeatModifyRequest request) {
-        seatService.modify(seatId, request);
+    @PutMapping("api/v1/seats/{id}")
+    public void modify(@PathVariable("id") Long id, @Valid @RequestBody SeatModifyRequest request) {
+        seatService.modify(id, request);
     }
 
-    @DeleteMapping("api/v1/seat/{seatId}")
-    public void delete(@PathVariable("seatId") Long seatId) {
-        seatService.delete(seatId);
+    @DeleteMapping("api/v1/seats/{id}")
+    public void delete(@PathVariable("id") Long id) {
+        seatService.delete(id);
     }
 }

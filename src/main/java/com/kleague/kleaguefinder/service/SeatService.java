@@ -33,7 +33,10 @@ public class SeatService {
     }
 
     private void validationCheck(SeatCreateRequest request) {
-        List<Seat> seats = seatRepository.findByNumberAndCategory(request.getSeatNumber(), request.getCategory());
+        List<Seat> seats = seatRepository.findByRequest(request.getSeatNumber()
+                        , request.getCategory(), 30, 0)
+                .stream().filter(seat -> seat.getSeatNumber().equals(request.getSeatNumber())
+                && seat.getCategory().equals(request.getCategory())).collect(Collectors.toList());
 
         if(!seats.isEmpty()){
             throw new DuplicatedValueException("Seat", "seatNumber & category");
@@ -42,27 +45,32 @@ public class SeatService {
 
     @Transactional(readOnly = true)
     public SeatResponse findById(Long seatId) {
-        Seat seat = seatRepository.findById(seatId).orElseThrow(() -> new NoValueException("Seat", "id"));
+        Seat seat = getSeat(seatId);
         return SeatResponse.createSeatResponse(seat);
     }
 
     @Transactional(readOnly = true)
     public List<SeatResponse> findByRequest(SeatSearchRequest request) {
-       return seatRepository.findBySearchRequest(request)
+       return seatRepository.findByRequest(request.getSeatNumber(),request.getCategory()
+                       ,request.getSize() , request.getOffset() )
                 .stream().map(SeatResponse::createSeatResponse).collect(Collectors.toList());
     }
 
     @Transactional
     public void modify(Long seatId, SeatModifyRequest request) {
-        Seat seat = seatRepository.findById(seatId).orElseThrow(() -> new NoValueException("Seat", "id"));
+        Seat seat = getSeat(seatId);
         seat.modify(request.getSeatNumber(), request.getCategory());
     }
 
     @Transactional
     public void delete(Long seatId) {
-        Seat seat = seatRepository.findById(seatId).orElseThrow(() -> new NoValueException("Seat", "id"));
+        Seat seat = getSeat(seatId);
         seatRepository.delete(seat);
     }
 
+    private Seat getSeat(Long seatId) {
+        Seat seat = seatRepository.findById(seatId).orElseThrow(() -> new NoValueException("Seat", "id"));
+        return seat;
+    }
 
 }

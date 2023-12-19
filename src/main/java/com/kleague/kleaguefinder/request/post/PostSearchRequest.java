@@ -1,5 +1,6 @@
-package com.kleague.kleaguefinder.request;
+package com.kleague.kleaguefinder.request.post;
 
+import com.kleague.kleaguefinder.domain.Post;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,28 +10,32 @@ import org.springframework.beans.factory.annotation.Autowired;
 import static java.lang.Math.*;
 
 @Getter
-@Setter
-@Builder
 @NoArgsConstructor
 public class PostSearchRequest {
 
-    @Autowired
     private static final int MAX_SIZE = 30;
 
-    @Builder.Default
     private String title = "";
-    @Builder.Default
+
     private String content = "";
-    @Builder.Default
-    private int page = 0;
-    @Builder.Default
+
+    private int page;
+
     private int size = 10;
 
+    @Builder
     public PostSearchRequest(String title, String content, int page, int size) {
-        this.title = title;
-        this.content = content;
+        this.title = (title == null) ? this.title : title;
+        this.content = (content == null) ? this.content : content;
         this.page = page;
-        this.size = size;
+        this.size = (size <= 0) ? this.size : size;
+    }
+
+    public Post toEntity() {
+        return Post.builder()
+                .title(this.title)
+                .content(this.content)
+                .build();
     }
 
     public int getOffSet() {
@@ -38,3 +43,4 @@ public class PostSearchRequest {
     }
 
 }
+

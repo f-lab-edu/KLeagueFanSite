@@ -2,10 +2,10 @@ package com.kleague.kleaguefinder.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kleague.kleaguefinder.domain.Post;
-import com.kleague.kleaguefinder.repository.PostRepository;
-import com.kleague.kleaguefinder.request.PostCreateRequest;
-import com.kleague.kleaguefinder.request.PostModifyRequest;
-import com.kleague.kleaguefinder.request.PostSearchRequest;
+import com.kleague.kleaguefinder.repository.post.PostRepository;
+import com.kleague.kleaguefinder.request.post.PostCreateRequest;
+import com.kleague.kleaguefinder.request.post.PostModifyRequest;
+import com.kleague.kleaguefinder.request.post.PostSearchRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,11 +41,14 @@ class PostControllerTest {
     @DisplayName("글 작성 성공")
     public void testV1() throws Exception {
         //given
-        PostCreateRequest postCreate = new PostCreateRequest("제목", "내용");
+        PostCreateRequest request = PostCreateRequest.builder()
+                .title("제목")
+                .content("내용")
+                .build();
         //when
-        String json = objectMapper.writeValueAsString(postCreate);
+        String json = objectMapper.writeValueAsString(request);
         //then
-        mockMvc.perform(post("/v1/posts/write")
+        mockMvc.perform(post("/api/v1/posts/write")
                         .contentType(MediaType.APPLICATION_JSON).content(json))
                 .andExpect(status().isOk())
                 .andDo(print());
@@ -64,7 +67,7 @@ class PostControllerTest {
         //when
         String json = objectMapper.writeValueAsString(post);
         //then
-        mockMvc.perform(get("/v1/posts/{postId}", post.getId()))
+        mockMvc.perform(get("/api/v1/posts/{id}", post.getId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.title").value("제목"))
                 .andExpect(jsonPath("$.content").value("내용"))
@@ -82,7 +85,7 @@ class PostControllerTest {
         //when
         String json = objectMapper.writeValueAsString(post);
         //then
-        mockMvc.perform(get("/v1/posts/{postId}", post.getId()))
+        mockMvc.perform(get("/api/v1/posts/{id}", post.getId()))
                 .andExpect(status().isNotFound())
                 .andDo(print());
     }
@@ -112,7 +115,7 @@ class PostControllerTest {
         String json = objectMapper.writeValueAsString(postSearch);
 
         // then
-        mockMvc.perform(post("/v1/posts/search")
+        mockMvc.perform(post("/api/v1/posts/search")
                         .content(json)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -148,7 +151,7 @@ class PostControllerTest {
         String json = objectMapper.writeValueAsString(postSearch);
 
         // then
-        mockMvc.perform(post("/v1/posts/search")
+        mockMvc.perform(post("/api/v1/posts/search")
                         .content(json)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -182,7 +185,7 @@ class PostControllerTest {
         String json = objectMapper.writeValueAsString(postSearch);
 
         // then
-        mockMvc.perform(post("/v1/posts/search")
+        mockMvc.perform(post("/api/v1/posts/search")
                         .content(json)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -220,7 +223,7 @@ class PostControllerTest {
 
         String json = objectMapper.writeValueAsString(postSearch);
 
-        mockMvc.perform(post("/v1/posts/search")
+        mockMvc.perform(post("/api/v1/posts/search")
                         .content(json)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -263,7 +266,7 @@ class PostControllerTest {
 
         String json = objectMapper.writeValueAsString(postSearch);
 
-        mockMvc.perform(post("/v1/posts/search")
+        mockMvc.perform(post("/api/v1/posts/search")
                         .content(json)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -308,7 +311,7 @@ class PostControllerTest {
 
         String json = objectMapper.writeValueAsString(postSearch);
 
-        mockMvc.perform(post("/v1/posts/search")
+        mockMvc.perform(post("/api/v1/posts/search")
                         .content(json)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -352,7 +355,7 @@ class PostControllerTest {
 
         String json = objectMapper.writeValueAsString(postSearch);
 
-        mockMvc.perform(post("/v1/posts/search")
+        mockMvc.perform(post("/api/v1/posts/search")
                         .content(json)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -374,13 +377,14 @@ class PostControllerTest {
 
         postRepository.save(post);
 
-        PostModifyRequest postModify = new PostModifyRequest();
-        postModify.setTitle("수정된 제목입니다.");
-        postModify.setContent("수정된 내용입니다.");
+        PostModifyRequest request = PostModifyRequest.builder()
+                .title("수정된 제목 입니다.")
+                .content("수정된 내용입니다.")
+                .build();
 
-        String json = objectMapper.writeValueAsString(postModify);
+        String json = objectMapper.writeValueAsString(request);
 
-        mockMvc.perform(put("/v1/posts/{postId}", post.getId())
+        mockMvc.perform(put("/api/v1/posts/{id}", post.getId())
                         .content(json)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -397,7 +401,7 @@ class PostControllerTest {
 
         postRepository.save(post);
 
-        mockMvc.perform(delete("/v1/posts/{postId}", post.getId()))
+        mockMvc.perform(delete("/api/v1/posts/{id}", post.getId()))
                 .andExpect(status().isOk())
                 .andDo(print());
     }
@@ -412,7 +416,7 @@ class PostControllerTest {
 
         postRepository.save(post);
 
-        mockMvc.perform(delete("/v1/posts/{postId}", post.getId() + 1L))
+        mockMvc.perform(delete("/api/v1/posts/{id}", post.getId() + 1L))
                 .andExpect(status().isNotFound())
                 .andDo(print());
     }
@@ -427,7 +431,7 @@ class PostControllerTest {
 
         postRepository.save(post);
 
-        mockMvc.perform(get("/v1/posts/{postId}", post.getId() + 1L))
+        mockMvc.perform(get("/api/v1/posts/{id}", post.getId() + 1L))
                 .andExpect(status().isNotFound())
                 .andDo(print());
     }

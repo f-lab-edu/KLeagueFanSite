@@ -15,13 +15,14 @@ public class GameInfoCustomRepositoryImpl implements GameInfoCustomRepository{
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public List<GameInfo> findByRequest(GameInfoSearchRequest request) {
+    public List<GameInfo> findByRequest(String name, String date, String location,
+                                        int size, int offset) {
         return jpaQueryFactory.selectFrom(gameInfo)
-                .where(gameInfo.date.contains(request.getDate())
-                        .and(gameInfo.name.contains(request.getName()))
-                        .and(gameInfo.location.contains(request.getLocation())))
-                .limit(request.getSize())
-                .offset(request.getOffset())
+                .where(gameInfo.date.contains(date)
+                        .and(gameInfo.name.contains(name))
+                        .and(gameInfo.location.contains(location)))
+                .limit(size)
+                .offset(offset)
                 .orderBy(gameInfo.id.desc())
                 .fetch();
     }

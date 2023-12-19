@@ -56,7 +56,7 @@ public class SeatServiceTest {
         Long seatId = seatService.save(request);
 
         // then
-        assertThat(seatId).isEqualTo(2L);
+        assertThat(seatId).isEqualTo(3L);
     }
 
     @Test
@@ -64,8 +64,12 @@ public class SeatServiceTest {
     public void saveFailV1() {
 
         // when
+        for(int i=2; i<27; i++){
+            seatRepository.save(Seat.builder().seatNumber(String.valueOf(i)).category(A).build());
+        }
+
         SeatCreateRequest request = SeatCreateRequest.builder()
-                .seatNumber("1")
+                .seatNumber("5")
                 .category(A)
                 .build();
 
@@ -76,7 +80,6 @@ public class SeatServiceTest {
     @Test
     @DisplayName("Seat 저장 성공 - 필드 중 한개 만 중복")
     public void saveSuccessV2() {
-
         // when
         SeatCreateRequest request = SeatCreateRequest.builder()
                 .seatNumber("1")
@@ -86,7 +89,7 @@ public class SeatServiceTest {
         Long seatId = seatService.save(request);
 
         // then
-        assertThat(seatId).isEqualTo(2L);
+        assertThat(seatId).isEqualTo(5L);
 
     }
 

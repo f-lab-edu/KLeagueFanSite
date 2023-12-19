@@ -21,28 +21,28 @@ public class GameInfoController {
 
     private final GameInfoService gameInfoService;
 
-    @PostMapping("api/v1/gameInfo/save")
+    @PostMapping("api/v1/gameInfos/save")
     public Long save(@Valid @RequestBody GameInfoCreateRequest request) {
         return gameInfoService.save(request);
     }
 
-    @GetMapping("api/v1/gameInfo/{gameInfoId}")
-    public GameInfoResponse findOne(@PathVariable("gameInfoId") Long id) {
+    @GetMapping("api/v1/gameInfos/{id}")
+    public GameInfoResponse findOne(@PathVariable("id") Long id) {
         return gameInfoService.findById(id);
     }
 
-    @PostMapping("api/v1/gameInfo/search")
+    @PostMapping("api/v1/gameInfos/search")
     public List<GameInfoResponse> search(@RequestBody GameInfoSearchRequest request) {
         return gameInfoService.findByRequest(request);
     }
 
-    @PutMapping("api/v1/gameInfo/{gameInfoId}")
-    public void modify(@PathVariable("gameInfoId") Long id, @Valid @RequestBody GameInfoModifyRequest request) {
+    @PutMapping("api/v1/gameInfos/{id}")
+    public void modify(@PathVariable("id") Long id, @Valid @RequestBody GameInfoModifyRequest request) {
         gameInfoService.modify(id,request);
     }
 
-    @DeleteMapping("api/v1/gameInfo/{gameInfoId}")
-    public void delete(@PathVariable("gameInfoId") Long id) {
+    @DeleteMapping("api/v1/gameInfos/{id}")
+    public void delete(@PathVariable("id") Long id) {
         gameInfoService.delete(id);
     }
 

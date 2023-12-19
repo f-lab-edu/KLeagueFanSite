@@ -20,7 +20,7 @@ public class SeatModifyRequest {
     private Category category;
 
     @Builder
-    public SeatModifyRequest(String seatNumber, Category category) {
+    private SeatModifyRequest(String seatNumber, Category category) {
         this.seatNumber = seatNumber;
         this.category = category;
     }

@@ -7,30 +7,27 @@ import lombok.Getter;
 import static java.lang.Math.*;
 
 @Getter
-@Builder
 public class GameInfoSearchRequest {
 
     private static final int MAX_SIZE = 30;
 
-    @Builder.Default
-    private String name = "";
-    @Builder.Default
-    private String date = "";
-    @Builder.Default
-    private String location = "";
+    private String name = "" ;
 
-    @Builder.Default
+    private String date = "";
+
+    private String location ="" ;
+
     private int page = 0;
 
-    @Builder.Default
     private int size = 10;
 
+    @Builder
     private GameInfoSearchRequest(String name, String date, String location, int page, int size) {
-        this.name = name;
-        this.date = date;
-        this.location = location;
+        this.name = (name == null) ? this.name : name;
+        this.date = (date == null) ? this.date : date;
+        this.location = (location == null) ? this.location : location;
         this.page = page;
-        this.size = size;
+        this.size = (size <= 0) ? this.size : size;
     }
 
     public GameInfo toEntity() {

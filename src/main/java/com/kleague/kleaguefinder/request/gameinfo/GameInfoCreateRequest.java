@@ -22,7 +22,7 @@ public class GameInfoCreateRequest {
     private String location;
 
     @Builder
-    public GameInfoCreateRequest(String name, String date, String location) {
+    private GameInfoCreateRequest(String name, String date, String location) {
         this.name = name;
         this.date = date;
         this.location = location;

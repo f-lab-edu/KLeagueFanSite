@@ -46,28 +46,32 @@ public class GameInfoService {
 
     @Transactional(readOnly = true)
     public GameInfoResponse findById(Long gameInfoId) {
-        GameInfo gameInfo = gameInfoRepository.findById(gameInfoId)
-                .orElseThrow(() -> new NoValueException("GameInfo", "id"));
+        GameInfo gameInfo = getGameInfo(gameInfoId);
         return GameInfoResponse.createGameInfoResponse(gameInfo);
     }
 
     @Transactional(readOnly = true)
     public List<GameInfoResponse> findByRequest(GameInfoSearchRequest request) {
-        return gameInfoRepository.findByRequest(request)
+        return gameInfoRepository.findByRequest(request.getName(),request.getDate(), request.getLocation()
+                , request.getSize(), request.getOffset())
                 .stream().map(GameInfoResponse::createGameInfoResponse).collect(Collectors.toList());
     }
 
     @Transactional
     public void modify(Long gameInfoId, GameInfoModifyRequest request) {
-        GameInfo gameInfo = gameInfoRepository.findById(gameInfoId)
-                .orElseThrow(() -> new NoValueException("GameInfo", "id"));
+        GameInfo gameInfo = getGameInfo(gameInfoId);
         gameInfo.modify(request.getName(), request.getDate(), request.getLocation());
     }
 
     @Transactional
     public void delete(Long gameInfoId) {
+        GameInfo gameInfo = getGameInfo(gameInfoId);
+        gameInfoRepository.delete(gameInfo);
+    }
+
+    private GameInfo getGameInfo(Long gameInfoId) {
         GameInfo gameInfo = gameInfoRepository.findById(gameInfoId)
                 .orElseThrow(() -> new NoValueException("GameInfo", "id"));
-        gameInfoRepository.delete(gameInfo);
+        return gameInfo;
     }
 }

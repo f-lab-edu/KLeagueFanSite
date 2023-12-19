@@ -32,15 +32,9 @@ public class Post {
         this.content = content;
     }
 
-    public PostModifier.PostModifierBuilder modifierBuilder() {
-        return PostModifier.builder()
-                .title(this.title)
-                .content(this.content);
-    }
-
-    public void modify(PostModifier postModifier) {
-        this.title = postModifier.getTitle();
-        this.content = postModifier.getContent();
+    public void modify(String title, String content) {
+        this.title = title;
+        this.content = content;
     }
 
 

@@ -21,7 +21,7 @@ public class SeatCreateRequest {
     private Category category;
 
     @Builder
-    public SeatCreateRequest(String seatNumber, Category category) {
+    private SeatCreateRequest(String seatNumber, Category category) {
         this.seatNumber = seatNumber;
         this.category = category;
     }

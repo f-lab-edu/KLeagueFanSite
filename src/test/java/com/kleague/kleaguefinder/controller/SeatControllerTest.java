@@ -66,7 +66,7 @@ public class SeatControllerTest {
         String json = objectMapper.writeValueAsString(request);
 
         // then
-        mockMvc.perform(post("/api/v1/seat/save")
+        mockMvc.perform(post("/api/v1/seats/save")
                         .contentType(APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isOk())
@@ -86,7 +86,7 @@ public class SeatControllerTest {
         String json = objectMapper.writeValueAsString(request);
 
         // then
-        mockMvc.perform(post("/api/v1/seat/save")
+        mockMvc.perform(post("/api/v1/seats/save")
                         .contentType(APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isOk())
@@ -106,7 +106,7 @@ public class SeatControllerTest {
         String json = objectMapper.writeValueAsString(request);
 
         // then
-        mockMvc.perform(post("/api/v1/seat/save")
+        mockMvc.perform(post("/api/v1/seats/save")
                         .contentType(APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isBadRequest())
@@ -125,7 +125,7 @@ public class SeatControllerTest {
 
         String json = objectMapper.writeValueAsString(request);
 
-        mockMvc.perform(post("/api/v1/seat/save")
+        mockMvc.perform(post("/api/v1/seats/save")
                         .contentType(APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isBadRequest())
@@ -142,7 +142,7 @@ public class SeatControllerTest {
 
         String json = objectMapper.writeValueAsString(request);
 
-        mockMvc.perform(post("/api/v1/seat/save")
+        mockMvc.perform(post("/api/v1/seats/save")
                         .contentType(APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isBadRequest())
@@ -159,7 +159,7 @@ public class SeatControllerTest {
     public void findSeatById() throws Exception {
 
 
-        mockMvc.perform(get("/api/v1/seat/{seatId}", seatNo1.getId()))
+        mockMvc.perform(get("/api/v1/seats/{id}", seatNo1.getId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.seatNumber").value("1"))
                 .andExpect(jsonPath("$.category").value("B"))
@@ -171,7 +171,7 @@ public class SeatControllerTest {
     public void findSeatByIdFail() throws Exception {
 
 
-        mockMvc.perform(get("/api/v1/seat/{seatId}", seatNo1.getId() + 20L))
+        mockMvc.perform(get("/api/v1/seats/{id}", seatNo1.getId() + 20L))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.code").value(404))
                 .andExpect(jsonPath("$.messages[0]")
@@ -190,7 +190,7 @@ public class SeatControllerTest {
 
         String json = objectMapper.writeValueAsString(request);
 
-        mockMvc.perform(post("/api/v1/seat/search")
+        mockMvc.perform(post("/api/v1/seats/search")
                         .contentType(APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isOk())
@@ -210,7 +210,7 @@ public class SeatControllerTest {
 
         String json = objectMapper.writeValueAsString(request);
 
-        mockMvc.perform(post("/api/v1/seat/search")
+        mockMvc.perform(post("/api/v1/seats/search")
                         .contentType(APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isOk())
@@ -230,7 +230,7 @@ public class SeatControllerTest {
 
         String json = objectMapper.writeValueAsString(request);
 
-        mockMvc.perform(post("/api/v1/seat/search")
+        mockMvc.perform(post("/api/v1/seats/search")
                         .contentType(APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isBadRequest())
@@ -251,7 +251,7 @@ public class SeatControllerTest {
 
         String json = objectMapper.writeValueAsString(request);
 
-        mockMvc.perform(put("/api/v1/seat/{seatId}", seatNo1.getId())
+        mockMvc.perform(put("/api/v1/seats/{id}", seatNo1.getId())
                         .contentType(APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isOk())
@@ -268,7 +268,7 @@ public class SeatControllerTest {
 
         String json = objectMapper.writeValueAsString(request);
 
-        mockMvc.perform(put("/api/v1/seat/{seatId}", seatNo1.getId() + 20L)
+        mockMvc.perform(put("/api/v1/seats/{id}", seatNo1.getId() + 20L)
                         .contentType(APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isNotFound())
@@ -288,7 +288,7 @@ public class SeatControllerTest {
 
         String json = objectMapper.writeValueAsString(request);
 
-        mockMvc.perform(put("/api/v1/seat/{seatId}", seatNo1.getId())
+        mockMvc.perform(put("/api/v1/seats/{id}", seatNo1.getId())
                         .contentType(APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isBadRequest())
@@ -308,7 +308,7 @@ public class SeatControllerTest {
 
         String json = objectMapper.writeValueAsString(request);
 
-        mockMvc.perform(put("/api/v1/seat/{seatId}", seatNo1.getId())
+        mockMvc.perform(put("/api/v1/seats/{id}", seatNo1.getId())
                         .contentType(APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isBadRequest())
@@ -328,7 +328,7 @@ public class SeatControllerTest {
     @DisplayName("Seat 삭제 - 성공")
     public void deleteSuccess() throws Exception {
 
-        mockMvc.perform(delete("/api/v1/seat/{seatId}", seatNo1.getId()))
+        mockMvc.perform(delete("/api/v1/seats/{id}", seatNo1.getId()))
                 .andExpect(status().isOk())
                 .andDo(print());
     }
@@ -337,7 +337,7 @@ public class SeatControllerTest {
     @DisplayName("Seat 삭제 - 실패")
     public void deleteFail() throws Exception {
 
-        mockMvc.perform(delete("/api/v1/seat/{seatId}", seatNo1.getId()+100L))
+        mockMvc.perform(delete("/api/v1/seats/{id}", seatNo1.getId()+100L))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.code").value(404))
                 .andExpect(jsonPath("$.messages[0]")

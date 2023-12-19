@@ -1,11 +1,11 @@
 package com.kleague.kleaguefinder.service;
 
 import com.kleague.kleaguefinder.domain.Post;
-import com.kleague.kleaguefinder.exception.NoIdValueException;
-import com.kleague.kleaguefinder.repository.PostRepository;
-import com.kleague.kleaguefinder.request.PostCreateRequest;
-import com.kleague.kleaguefinder.request.PostModifyRequest;
-import com.kleague.kleaguefinder.request.PostSearchRequest;
+import com.kleague.kleaguefinder.exception.NoValueException;
+import com.kleague.kleaguefinder.repository.post.PostRepository;
+import com.kleague.kleaguefinder.request.post.PostCreateRequest;
+import com.kleague.kleaguefinder.request.post.PostModifyRequest;
+import com.kleague.kleaguefinder.request.post.PostSearchRequest;
 import com.kleague.kleaguefinder.response.PostResponse;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -35,9 +35,13 @@ class PostServiceTest {
     @DisplayName("글 작성 성공")
     public void testV1() {
         //given
-        PostCreateRequest postCreate = new PostCreateRequest("제목", "내용");
+        PostCreateRequest request = PostCreateRequest.builder()
+                .title("제목")
+                .content("내용")
+                .build();
+
         //when
-        Long postId = postService.write(postCreate);
+        Long postId = postService.write(request);
         //then
         assertThat(postRepository.count()).isEqualTo(1);
     }
@@ -73,7 +77,7 @@ class PostServiceTest {
         postRepository.save(post);
 
         // expected
-        assertThatThrownBy(() -> postService.findOne(post.getId() + 1L)).isInstanceOf(NoIdValueException.class);
+        assertThatThrownBy(() -> postService.findOne(post.getId() + 1L)).isInstanceOf(NoValueException.class);
 
     }
 
@@ -88,9 +92,11 @@ class PostServiceTest {
                     .build();
 
             postRepository.save(post);
+
         }
+
         // when
-        List<PostResponse> postResponseList = postService.findBySearch(new PostSearchRequest());
+        List<PostResponse> postResponseList = postService.findBySearch(PostSearchRequest.builder().build());
 
         // then
         assertThat(postResponseList.size()).isEqualTo(5);
@@ -104,7 +110,7 @@ class PostServiceTest {
     public void testV5() {
 
         // when
-        List<PostResponse> postResponseList = postService.findBySearch(new PostSearchRequest());
+        List<PostResponse> postResponseList = postService.findBySearch(PostSearchRequest.builder().build());
 
         // then
         assertThat(postResponseList.size()).isEqualTo(0);
@@ -361,11 +367,12 @@ class PostServiceTest {
 
         postRepository.save(post);
         // when
-        PostModifyRequest postModify = new PostModifyRequest();
-        postModify.setTitle("수정된 제목입니다.");
-        postModify.setContent("수정된 내용입니다.");
+        PostModifyRequest request = PostModifyRequest.builder()
+                .title("수정된 제목입니다.")
+                .content("수정된 내용입니다.")
+                .build();
 
-        postService.modify(post.getId(), postModify);
+        postService.modify(post.getId(), request);
         // then
         assertThat(post.getTitle()).isEqualTo("수정된 제목입니다.");
         assertThat(post.getContent()).isEqualTo("수정된 내용입니다.");
@@ -383,10 +390,12 @@ class PostServiceTest {
 
         postRepository.save(post);
         // when
-        PostModifyRequest postModify = new PostModifyRequest();
-        postModify.setTitle("수정된 제목입니다.");
+        PostModifyRequest request = PostModifyRequest.builder()
+                .title("수정된 제목입니다.")
+                .content("내용 입니다.")
+                .build();
 
-        postService.modify(post.getId(), postModify);
+        postService.modify(post.getId(), request);
 
         // then
         assertThat(post.getTitle()).isEqualTo("수정된 제목입니다.");
@@ -405,11 +414,13 @@ class PostServiceTest {
 
         postRepository.save(post);
         // when
-        PostModifyRequest postModify = new PostModifyRequest();
-        postModify.setTitle("수정된 제목입니다.");
+        PostModifyRequest request = PostModifyRequest.builder()
+                .title("수정된 제목 입니다.")
+                .content("수정된 내용입니다.")
+                .build();
 
-        assertThatThrownBy(() -> postService.modify(post.getId() + 1L, postModify))
-                .isInstanceOf(NoIdValueException.class);
+        assertThatThrownBy(() -> postService.modify(post.getId() + 10L, request))
+                .isInstanceOf(NoValueException.class);
 
     }
 
@@ -424,10 +435,12 @@ class PostServiceTest {
 
         postRepository.save(post);
         // when
-        PostModifyRequest postModify = new PostModifyRequest();
-        postModify.setContent("수정된 내용입니다.");
+        PostModifyRequest request = PostModifyRequest.builder()
+                .title("제목 입니다.")
+                .content("수정된 내용입니다.")
+                .build();
 
-        postService.modify(post.getId(), postModify);
+        postService.modify(post.getId(), request);
 
         // then
         assertThat(post.getTitle()).isEqualTo("제목 입니다.");
@@ -469,7 +482,7 @@ class PostServiceTest {
 
         // expected
         assertThatThrownBy(() -> postService.delete(post.getId() + 100L))
-                .isInstanceOf(NoIdValueException.class);
+                .isInstanceOf(NoValueException.class);
 
     }
 

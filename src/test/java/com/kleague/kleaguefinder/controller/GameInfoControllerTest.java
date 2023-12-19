@@ -84,7 +84,7 @@ public class GameInfoControllerTest {
 
         String json = objectMapper.writeValueAsString(request);
 
-        mockMvc.perform(post("/api/v1/gameInfo/save")
+        mockMvc.perform(post("/api/v1/gameInfos/save")
                 .contentType(APPLICATION_JSON)
                 .content(json))
                 .andExpect(status().isOk())
@@ -105,7 +105,7 @@ public class GameInfoControllerTest {
         String json = objectMapper.writeValueAsString(request);
 
         // then
-        mockMvc.perform(post("/api/v1/gameInfo/save")
+        mockMvc.perform(post("/api/v1/gameInfos/save")
                         .contentType(APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isBadRequest())
@@ -127,7 +127,7 @@ public class GameInfoControllerTest {
         String json = objectMapper.writeValueAsString(request);
 
         // then
-        mockMvc.perform(post("/api/v1/gameInfo/save")
+        mockMvc.perform(post("/api/v1/gameInfos/save")
                         .contentType(APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isBadRequest())
@@ -152,8 +152,8 @@ public class GameInfoControllerTest {
         // when
         String json = objectMapper.writeValueAsString(request);
 
-        // then
-        mockMvc.perform(post("/api/v1/gameInfo/save")
+        // expect
+        mockMvc.perform(post("/api/v1/gameInfos/save")
                         .contentType(APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isBadRequest())
@@ -167,7 +167,7 @@ public class GameInfoControllerTest {
     @DisplayName("Id 로 검색")
     public void findById() throws Exception {
 
-        mockMvc.perform(get("/api/v1/gameInfo/{Id}", gameInfo.getId()))
+        mockMvc.perform(get("/api/v1/gameInfos/{Id}", gameInfo.getId()))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value("서울 vs 부산"))
                 .andExpect(jsonPath("$.date").value("12월 12일"))
@@ -180,7 +180,7 @@ public class GameInfoControllerTest {
     @DisplayName("Id 로 검색 - 실패")
     public void findByIdFail() throws Exception {
 
-        mockMvc.perform(get("/api/v1/gameInfo/{Id}", gameInfo.getId() + 10L))
+        mockMvc.perform(get("/api/v1/gameInfos/{Id}", gameInfo.getId() + 10L))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.code").value(404))
                 .andExpect(jsonPath("$.messages[0]")
@@ -198,7 +198,7 @@ public class GameInfoControllerTest {
 
         String json = objectMapper.writeValueAsString(searchRequest);
 
-        mockMvc.perform(post("/api/v1/gameInfo/search")
+        mockMvc.perform(post("/api/v1/gameInfos/search")
                         .contentType(APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isOk())
@@ -218,7 +218,7 @@ public class GameInfoControllerTest {
 
         String json = objectMapper.writeValueAsString(searchRequest);
 
-        mockMvc.perform(post("/api/v1/gameInfo/search")
+        mockMvc.perform(post("/api/v1/gameInfos/search")
                         .contentType(APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isOk())
@@ -238,7 +238,7 @@ public class GameInfoControllerTest {
 
         String json = objectMapper.writeValueAsString(searchRequest);
 
-        mockMvc.perform(post("/api/v1/gameInfo/search")
+        mockMvc.perform(post("/api/v1/gameInfos/search")
                         .contentType(APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isOk())
@@ -260,7 +260,7 @@ public class GameInfoControllerTest {
 
         String json = objectMapper.writeValueAsString(searchRequest);
 
-        mockMvc.perform(post("/api/v1/gameInfo/search")
+        mockMvc.perform(post("/api/v1/gameInfos/search")
                         .contentType(APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isOk())
@@ -282,7 +282,7 @@ public class GameInfoControllerTest {
 
         String json = objectMapper.writeValueAsString(searchRequest);
 
-        mockMvc.perform(post("/api/v1/gameInfo/search")
+        mockMvc.perform(post("/api/v1/gameInfos/search")
                         .contentType(APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isOk())
@@ -304,7 +304,7 @@ public class GameInfoControllerTest {
 
         String json = objectMapper.writeValueAsString(searchRequest);
 
-        mockMvc.perform(put("/api/v1/gameInfo/{Id}", gameInfo.getId() )
+        mockMvc.perform(put("/api/v1/gameInfos/{Id}", gameInfo.getId() )
                         .contentType(APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isOk())
@@ -325,7 +325,7 @@ public class GameInfoControllerTest {
         String json = objectMapper.writeValueAsString(request);
 
         // then
-        mockMvc.perform(put("/api/v1/gameInfo/{gameInfoId}", gameInfo.getId())
+        mockMvc.perform(put("/api/v1/gameInfos/{id}", gameInfo.getId())
                         .contentType(APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isBadRequest())
@@ -348,7 +348,7 @@ public class GameInfoControllerTest {
 
         String json = objectMapper.writeValueAsString(searchRequest);
 
-        mockMvc.perform(put("/api/v1/gameInfo/{Id}", gameInfo.getId() + 100L )
+        mockMvc.perform(put("/api/v1/gameInfos/{Id}", gameInfo.getId() + 100L )
                         .contentType(APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isNotFound())
@@ -362,7 +362,7 @@ public class GameInfoControllerTest {
     @DisplayName("삭제")
     public void deleteGameInfo() throws Exception {
 
-        mockMvc.perform(delete("/api/v1/gameInfo/{gameInfoId}", gameInfo.getId())
+        mockMvc.perform(delete("/api/v1/gameInfos/{id}", gameInfo.getId())
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print());
@@ -372,7 +372,7 @@ public class GameInfoControllerTest {
     @DisplayName("삭제 - GameInfo 없어서 예외발생")
     public void deleteGameInfoNoValue() throws Exception {
 
-        mockMvc.perform(delete("/api/v1/gameInfo/{gameInfoId}", gameInfo.getId() + 100L)
+        mockMvc.perform(delete("/api/v1/gameInfos/{id}", gameInfo.getId() + 100L)
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.code").value(404))

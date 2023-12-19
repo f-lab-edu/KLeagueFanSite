@@ -21,6 +21,7 @@ public class PostSearchRequest {
     private String title = "";
     @Builder.Default
     private String content = "";
+
     @Builder.Default
     private int page = 0;
     @Builder.Default

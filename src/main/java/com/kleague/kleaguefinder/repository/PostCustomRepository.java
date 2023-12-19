@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface PostCustomRepository {
 
-    public List<Post> getList(PostSearchRequest postSearch);
+    public List<Post> findBySearchRequest(PostSearchRequest postSearch);
 }

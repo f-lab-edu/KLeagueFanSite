@@ -28,6 +28,7 @@ public class ExceptionController {
         errorResponse.addMessages(e.getMessage());
 
         return ResponseEntity.status(e.getStatusCode()).body(errorResponse);
+
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

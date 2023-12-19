@@ -2,10 +2,6 @@ package com.kleague.kleaguefinder.exception;
 
 import lombok.Getter;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
-
 @Getter
 public abstract class MainException extends RuntimeException{
 

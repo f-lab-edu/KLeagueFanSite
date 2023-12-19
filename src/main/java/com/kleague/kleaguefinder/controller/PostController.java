@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -19,7 +20,7 @@ public class PostController {
     private final PostService postService;
 
     @PostMapping("v1/posts/write")
-    public Long write(@RequestBody PostCreateRequest postCreateRequest) {
+    public Long write(@Valid @RequestBody PostCreateRequest postCreateRequest) {
         return postService.write(postCreateRequest);
     }
 
@@ -35,7 +36,7 @@ public class PostController {
 
     @PutMapping("v1/posts/{postId}")
     public void modify(@PathVariable("postId") Long postId,
-                       @RequestBody PostModifyRequest postModifyRequest) {
+                       @Valid @RequestBody PostModifyRequest postModifyRequest) {
         postService.modify(postId, postModifyRequest);
     }
 

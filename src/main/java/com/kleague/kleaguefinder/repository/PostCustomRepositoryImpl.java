@@ -14,7 +14,7 @@ public class PostCustomRepositoryImpl implements PostCustomRepository {
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public List<Post> getList(PostSearchRequest postSearch) {
+    public List<Post> findBySearchRequest(PostSearchRequest postSearch) {
         return jpaQueryFactory.selectFrom(post)
                 .where(post.title.contains(postSearch.getTitle())
                         .and(post.content.contains(postSearch.getContent())))

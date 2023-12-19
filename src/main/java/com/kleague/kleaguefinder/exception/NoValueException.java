@@ -4,6 +4,7 @@ import com.kleague.kleaguefinder.exception.MainException;
 
 import static com.kleague.kleaguefinder.exception.ErrorCode.*;
 
+
 public class NoValueException extends MainException {
 
     private static final String MESSAGE = NO_VALUE_CODE.getMessage();
